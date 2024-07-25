@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .tank {
+      position: relative;
+      width: 150px;
+      height: 300px;
+      border: 2px solid #000;
+      /* margin: 20px,0,0,20px; */
+      display: inline-block;
+      vertical-align: top;
+      overflow: hidden; /* Contain the water element */
+    }
+
+    .tank-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2; /* Ensure image is on top */
+    }
+
+    .water {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 0;
+      background-color: #00BFFF;
+      z-index: 1; /* Ensure water is below the image */
+      transition: height 0.5s;
+    }
+
+    .pipe {
+      width: 200px;
+      height: 10px;
+      border: 2px solid #000;
+      position: relative;
+      /* justify-items: baseline; */
+      display: inline-block;
+      overflow: hidden;
+      top: 290px;
+    }
+
+    .water-drop {
+      position: absolute;
+      top: 0;
+      left: -10%;
+      width: 10px;
+      height: 10px;
+      background-color: #00BFFF;
+      border-radius: 50%;
+      animation: drop 2s linear infinite;
+      overflow: hidden;
+    }
+
+    @keyframes drop {
+      0% {
+        transform: translateX(-100px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(200px);
+        opacity: 0;
+      }
+    }
+  </style>
+  <script>
+    function createWaterElements() {
+      const pipe = document.getElementById("pipe");
+      for (let i = 0; i < 20; i++) {
+        const waterDrop = document.createElement("div");
+        waterDrop.classList.add("water-drop");
+        waterDrop.style.animationDelay = `${i * 0.1}s`; /* Stagger the animation */
+        pipe.appendChild(waterDrop);
+      }
+    }
+
+    function toggleWaterFlow() {
+        createWaterElements();
+      const waterDrops = document.querySelectorAll(".water-drop");
+      const water1 = document.getElementById('water1');
+      const water2 = document.getElementById('water2');
+
+      if (waterDrops[0].style.animationPlayState === 'paused' || !waterDrops[0].style.animationPlayState) {
+        waterDrops.forEach(drop => drop.style.animationPlayState = "running");
+
+      } else {
+        waterDrops.forEach(drop => drop.style.animationPlayState = "paused");
+
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div id="animation-container">
+    <div class="tank">
+      <img src="tank.png" class="tank-image">
+      <div id="water1" class="water" style="height: 50%;"></div>
+    </div>
+    <div id="pipe" class="pipe"></div>
+    <div class="tank">
+      <img src="tank.png" class="tank-image">
+      <div id="water2" class="water" style="height: 30%;"></div>
+    </div>
+  </div>
+  <div class="button">
+    <button onclick="toggleWaterFlow()">Start/Stop</button>
+  </div>
+</body>
+
+</html>
